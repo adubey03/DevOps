@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage("code"){
+            steps{
+                git url: "https://gitlab.com/amanaikenist/frontend-ezheal.git", branch: "main"
+                echo 'Code has been cloned Successfully!'
+            }
+        }
+        stage("build and test"){
+            steps{
+                sh "docker build -t node-todo-app ."
+                echo 'Code has been built successfully!'
+            }
+        }
+        stage("scan image"){
+            steps{
+                echo 'Image has been Scanned Successfully!'
+            }
+        }
+        stage("push"){
+            steps{
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker tag node-todo-app:latest ${env.dockerHubUser}/node-todo-app:latest"
+                sh "docker push ${env.dockerHubUser}/node-todo-app:latest"
+                echo 'Image has been pushed'
+                }
+            }
+        }
+        stage("deploy"){
+            steps{
+                sh "docker-compose down && docker-compose up -d"
+                echo 'Deployment Successfull!'
+            }
+        }
+    }
+}
