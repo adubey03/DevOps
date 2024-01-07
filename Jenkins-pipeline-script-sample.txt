@@ -5,7 +5,7 @@ pipeline {
         
         stage("code"){
             steps{
-                git url: "https://gitlab.com/amanaikenist/frontend-ezheal.git", branch: "main"
+                git url: "github_repo_url", branch: "branch_name"
                 echo 'Code has been cloned Successfully!'
             }
         }
