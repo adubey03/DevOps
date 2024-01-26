@@ -1,0 +1,58 @@
+creating pod from yaml file - 
+--------------------------------
+
+kubectl create -f yamlFile.yml
+
+kubectl apply -f yamlFile.yml (for creating a new pod this also works same as above one)
+
+
+deleting pods -
+-------------------
+
+kubectl delete -f yamlFile.yml (for deleting pod using yaml file)
+
+to get list of pods running - 
+-------------------------------
+
+kubectl get pods
+
+creating pod without yaml file - 
+----------------------------------
+
+kubectl run nginx --image=nginx 
+
+here nginx is the image name, it will pull the image from docker hub.
+
+
+
+REPLICA SET:-
+--------------
+
+For replacing pods after changing replica sets in yaml file -
+
+kubectl replace -f yamlFile.yaml
+
+other way for updating replica sets - 
+
+kubectl scale --replica=6 yamlFile.yml
+
+For getting the list of replicasets - 
+
+kubectl get replicasets
+
+kubectl edit replicaset myapp-replicasetFile
+
+kubectl scale replicaset myapp-replicasetFile --replicas=2
+
+-------------------------------------------
+
+
+DEPLOYMENT FILE:-
+--------------------
+
+kubectl create -f deploymentFile.yml
+
+kubectl get deployments
+
+
+

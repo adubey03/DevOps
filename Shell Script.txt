@@ -1,0 +1,8 @@
+To run script in debug mode (display each command before executing) :-
+set -x
+write the above command before writing the main script
+
+
+
+
+
