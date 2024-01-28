@@ -1,0 +1,24 @@
+To see on-growing logs -
+tail -f filename (live log we can see)
+
+To copy one file data to another-
+cat file1.txt > file2.txt
+
+To copy multiple file data to another file-
+cat file1.txt file2.txt > file3.txt
+
+To delete non empty directory-
+rmdir -r directoryName
+
+To delete empty directory-
+rmdir directoryName
+
+* To rename and move file we can use mv command
+
+Linux Kernel
+---------------
+It is a low-level systems software whose main role is to manage hardware resources for the user.
+It is the core of any OS & it is responsible for translating the user commands into equivalent language understood by the computer hardware.
+
+
+
