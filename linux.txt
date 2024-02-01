@@ -189,5 +189,3 @@ systemctl status openvpn
 50. Check Failed Login Attempts:
 cat /var/log/
 
-
-

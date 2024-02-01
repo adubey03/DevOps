@@ -1,0 +1,85 @@
+Jenkins Installation
+---------------------
+
+Pre-requisites: install Java
+
+sudo apt install openjdk-11-jdk (based on requirement, version can be selected)
+
+Jenkins Install Commands (from jenkins official)
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+
+Note : Open the port 8080 on server for jenkins to Run
+
+
+You can enable the Jenkins service to start at boot with the command:
+
+sudo systemctl enable jenkins
+You can start the Jenkins service with the command:
+
+sudo systemctl start jenkins
+You can check the status of the Jenkins service using the command:
+
+sudo systemctl status jenkins
+If everything has been set up correctly, you should see an output like this:
+
+    Loaded: loaded (/lib/systemd/system/jenkins.service; enabled; vendor preset: enabled)
+    Active: active (running) since Tue 2023-06-22 16:19:01 +03; 4min 57s ago
+    ...
+
+
+To Restart Jenkins
+---------------------
+
+sudo systemctl restart jenkins
+
+
+
+----------------------------------------------------------------------------------
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage("code"){
+            steps{
+                git url: "github_repo_url", branch: "branch_name"
+                echo 'Code has been cloned Successfully!'
+            }
+        }
+        stage("build and test"){
+            steps{
+                sh "docker build -t node-todo-app ."
+                echo 'Code has been built successfully!'
+            }
+        }
+        stage("scan image"){
+            steps{
+                echo 'Image has been Scanned Successfully!'
+            }
+        }
+        stage("push"){
+            steps{
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker tag node-todo-app:latest ${env.dockerHubUser}/node-todo-app:latest"
+                sh "docker push ${env.dockerHubUser}/node-todo-app:latest"
+                echo 'Image has been pushed'
+                }
+            }
+        }
+        stage("deploy"){
+            steps{
+                sh "docker-compose down && docker-compose up -d"
+                echo 'Deployment Successfull!'
+            }
+        }
+    }
+}
