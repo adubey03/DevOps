@@ -1,0 +1,82 @@
+Ad hocs command
+----------------------
+- simple linux commands. Limited operations can be performed.
+-Drawback- does the same work again and again, eg: if we run a command to create a file twice, the second time it will overwrite the 1st file.
+  This way it is doing the same work twice.
+
+Modules
+----------
+-Yml file
+-Use for single work
+
+playbooks
+-------------
+-Yml file
+-used to write multiple modules(for doing multiple works)
+
+=================================
+
+
+sample ansible playbook
+--------------------------
+ - name: playbookName
+   hosts: all 
+   become: root
+
+   tasks:
+   - name: Install nginx
+     shell: apt install nginx
+  
+    - name: Start nginx
+      shell: systemctl start nginx
+
+ ===================================
+
+
+ Other way (for the same task)
+ ---------------------------------
+
+ - name: Install and Start nginx
+   hosts: all
+   become: root
+
+   tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+    - name: Start nginx
+      service:
+         name: nginx
+         state: started
+
+==========================================
+
+command to run playbooks
+--------------------------
+
+ansible-playbook -i inventory playbookName
+
+
+to add verbosity (debug logs)
+--------------------------------
+
+ansible-playbook -v -i inventory playbookName
+
+
+====================================================
+
+
+Ansible Roles - efficient way writing ansible playbooks
+
+=> ansible-galaxy role init roleName
+
+this command will create bunch of files & folders, which will help to structure our ansible playbooks
+
+
+Q. Create 3 ec2 instances (using terraform) on aws and configure 1 of those as master and other two as 'worker' (using ansible)
+
+
+
+
+
